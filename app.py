@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request, abort
 from models import setup_db, Togo, Went
 from auth import requires_auth
+import os
+
 
 app = Flask(__name__)
 setup_db(app)
