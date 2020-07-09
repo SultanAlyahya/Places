@@ -8,10 +8,6 @@ app = Flask(__name__)
 setup_db(app)
 
 
-@app.route('/', methods=['GET'])
-def test():
-    return "works"
-
 
 @app.route('/togo', methods=['GET'])
 @requires_auth('get:location')

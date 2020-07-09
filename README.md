@@ -25,20 +25,15 @@ $:env:FLASK_APP="app.py"
 $:env:FLASK_ENV=development
 flask run
 
+#### app.py
 Endpoints
 
-GET '/'
 GET '/togo'
 POST '/togo'
 PATCH '/togo'
 DELETE '/togo'
 GET '/went'
 POST '/went/
-
-GET '/'
-- Fetches a String
-- Request Arguments: None
-- Return: the word "works" to know that the server is working
 
 GET '/togo'
 - Fetches a dictionary of array togos
@@ -114,3 +109,22 @@ Testing
 to run the tests, you can by running the command
 
 -python test.py
+
+#### auth.py
+Auth0 is set up and running. The following configurations:
+- The Auth0 Domain Name = fsnd-sultan.us.auth0.com
+- The JWT code signing secret = RS256
+- The Auth0 Client ID = place
+The JWT token contains the permissions for the 'viewer' and 'admin' roles.
+
+viewer permissions={
+    get:togo,
+    get:went
+}
+
+admin permissions={
+    post:togo,
+    post:went,
+    patch:togo,
+    delete:togo
+}
