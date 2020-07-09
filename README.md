@@ -108,3 +108,8 @@ POST '/togo'
 {
     "done": "yes"
 }
+
+Testing 
+
+to run the tests you can by running the command
+-python test.py
