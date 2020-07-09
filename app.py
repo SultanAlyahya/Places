@@ -5,9 +5,11 @@ from auth import requires_auth
 app = Flask(__name__)
 setup_db(app)
 
+
 @app.route('/', methods=['GET'])
 def test():
     return "works"
+
 
 @app.route('/togo', methods=['GET'])
 @requires_auth('get:location')
@@ -17,16 +19,18 @@ def all(jwt):
     print(formatted_togo)
     return jsonify({'togos': formatted_togo})
 
+
 @app.route('/togo', methods=['POST'])
 @requires_auth('post:location')
 def add_togo(jwt):
     try:
-        Togo( location=request.get_json()['location'],
-              date=request.get_json()['date'],
-              description=request.get_json()['description']).insert()
+        Togo(location=request.get_json()['location'],
+             date=request.get_json()['date'],
+             description=request.get_json()['description']).insert()
         return jsonify({'done': 'yes'}), 201
     except Exception:
         return jsonify({'done': 'no'}), 500
+
 
 @app.route('/togo/<id>', methods=['PATCH'])
 @requires_auth('patch:location')
@@ -50,6 +54,7 @@ def edit_togp(jwt, id):
     except Exception:
         return jsonify({'done': 'no'}), 500
 
+
 @app.route('/togo/<id>', methods=['DELETE'])
 @requires_auth('delete:location')
 def delete_togo(jwt, id):
@@ -62,6 +67,7 @@ def delete_togo(jwt, id):
     except Exception:
         return jsonify({'done': 'no'}), 500
 
+
 @app.route('/went', methods=['GET'])
 @requires_auth('get:went')
 def went(jwt):
@@ -69,13 +75,30 @@ def went(jwt):
     formatted_went = [went.format() for went in wents]
     print(formatted_went)
     return jsonify({'went': formatted_went})
-   
+
+
 @app.route('/went', methods=['POST'])
 @requires_auth('post:went')
 def add_went(jwt):
     try:
-        Went( location=request.get_json()['location'],
-              description=request.get_json()['description']).insert()
+        Went(location=request.get_json()['location'],
+             description=request.get_json()['description']).insert()
         return jsonify({'done': 'yes'}), 201
     except Exception:
         return jsonify({'done': 'no'}), 500
+
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return jsonify({'error': 'api not found'}), 404
+
+    @app.errorhandler(422)
+    def server_error(error):
+        return jsonify({'error': 'you reach Unprocessable api'}), 422
+
+    @app.errorhandler(401)
+    def not_found_error(error):
+        return jsonify({'error': 'unauthorized access'}), 401
+
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({'error': 'server error'}), 500
