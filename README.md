@@ -111,5 +111,5 @@ POST '/togo'
 
 Testing 
 
-to run the tests you can by running the command
+to run the tests, you can by running the command
 -python test.py
